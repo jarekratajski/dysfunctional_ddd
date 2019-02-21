@@ -15,31 +15,36 @@ Wizard, Anarchitect, Coder
 
 
 # disclaimer
-   - I tried not to attack anyone personally, actually I do like my coleagues doing DDD, and I have learned a lot from some  of them<!-- .element class="fragment"-->
-   - just not DDD<!-- .element class="fragment"--> `¯\_(ツ)_/¯`<!-- .element class="fragment"-->
+   - I tried not to attack anyone personally, actually I do like my colleagues doing DDD, and I have learned a lot from some  of them<!-- .element class="fragment"-->
    - not an expert, (some experience wih CQRS/ES not DDD)<!-- .element class="fragment"-->
 
 
 
 # Why DDD?
+- People talk about it
 - Object oriented world
-- Obiect oriented design
-- people talk about it 
+- Like mixing concepts 
 
 
 
-- like UML
-- like Agile
+My problem with DDD
 
 
 
-![UML](img/umlcd.png)
+
+DDD story resembles me 
+- UML
+- what happened to  Agile
+
+
+
+![UML](img/umlcd.png)<!-- .element height="400px"-->
 
 cool<!-- .element class="fragment"-->
 
 
 
-![UML](img/umluc.png)
+![UML](img/umluc.png)<!-- .element height="400px"-->
 
 What??<!-- .element class="fragment"-->
 
@@ -88,6 +93,10 @@ But who likes marketing b...it?!
 
 
 
+For years I was scared of DDD marketing
+
+
+
 # Books
 
 ![Eric Evans](img/bluebook.jpeg)<!-- .element height="400px"-->
@@ -95,10 +104,15 @@ But who likes marketing b...it?!
 
 
 
-DDD good parts
-- researching community
-- make systems better
-- patterns
+Make logic of the system visible in code
+
+
+
+# DDD good parts
+- community
+- constant improvement
+- lots of patterns / ideas
+- interesting stories
 
 
 
@@ -110,8 +124,14 @@ DDD bad(?) parts
 - marketing
 - example projects
 - over-engineering 
-- crazy wars
+- partly toxic community
 - hard to see the point
+
+
+
+If a tool, methodology, framework makes simple case **complex**
+
+it will probably not make a real life, complex project **simple**  
 
 
 
@@ -144,8 +164,6 @@ Skipping some essential parts.
 
 Like `bounded context` etc.
 
-Actually there is some sense and real value in that.<!-- .element class="fragment"--> 
-
 
 
 DDD is mostly not about `technology`
@@ -158,15 +176,25 @@ Ubiquitous Language
 
 
 
+
+Some concepts are useful, but have nothing to do with FP 
+
+
+
+
 I just love to `code` more
 
 
 
-And you wil not pay me for my fancy sport car anyhow :-(
+And you wil not pay me areal money (for a fancy car) :-(
 
 
 
 # Lets play snake  (multiplayer)
+
+
+
+![Snake](img/snake.png)
 
 
 
@@ -182,13 +210,14 @@ data SnakeCommand
              initName :: String
            , initCell :: SnakeCell }
 ```
-We will need more of them later.
+
 
 
 
 # Commands
 
  - user or subsytem `wants` to do something
+ - commands may be associated with validation
 
 
 
@@ -197,12 +226,13 @@ We will need more of them later.
 ```haskell
 data SnakeEvent
    = DirectionChanged { newDirection :: SnakeDirection }
+   | StepMade
    | Killed
    | Born { bornName :: String
           , bornCell :: SnakeCell }
    deriving (Eq, Show, Generic)
 ```
- (more needed)
+
 
 
 
@@ -210,13 +240,13 @@ data SnakeEvent
 
  - it has happened
  - no validation (it really happened)
- - a command may results in 0..n events 
+ - a single command is associated in 0..n events 
 
 
 
-*Funny fact*
+*Fact*
 
-You will not find anything about commands and events in Eric Evans book
+You will not find anything about this  in Eric Evans book  (blue))
  
 Even though nowadays  DDD community seems to be all around those concepts 
 
@@ -228,15 +258,43 @@ What if just stored only events?
 
 
 
-```
-example
+```json
+[
+  {
+    "event": {
+      "tag": "Born",
+      "bornName": "aa",
+      "bornCell": {
+        "cellY": 18,
+        "cellX": 14
+      }
+    },
+    "snakeId": "4d09ac06-0375-4cb0-ad08-c70d14968677"
+  },
+  {
+    "event": {
+      "tag": "DirectionChanged",
+      "newDirection": "SnakeRight"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+ 
 
 ```
+
+
+
+# Command sourcing?
+
+Also possible... but in fact harder - validation is a problem
+
+
+
 
 # Value Object
 
 - immutable...
-- represents value from real life (or not)
+- represents value (from `real` life)
 - has no identity
 - properties define equality
 
@@ -261,7 +319,7 @@ data SnakeDirection
 
 - has identity
 - in OOP may be mutable
-- some ID defines equality 
+- ID defines equality 
 - entity may contain `value objects`
 - entity may contain `entities`
 
@@ -280,8 +338,13 @@ data SnakeState
            , maxLength :: Int }
    | Dead
    | Init
+   
+data Snake = Snake
+   { name  :: String
+   , state :: SnakeState
+   } deriving (Eq, Show, Generic)
 
-type SnakeEntity = (SnakeId, SnakeState)
+type SnakeEntity = (SnakeId, Snake)
 ```
 
 
@@ -290,14 +353,27 @@ Easy?
 
 
 
-- SnakeCell(x,y) is value object or entity?
+- `SnakeCell(x,y)` is value object or entity?
 
 
 
-*funny fact*
+*To think*
 
-Have never introduced SnakeEntity. 
-Only have SnakeState  which does not (physically) contain Id
+I have never introduced `type SnakeEntity = (SnakeId, Snake)` 
+
+Only have SnakeState which does not (physically) contain Id
+
+an Entity without id??<!-- .element class="fragment"-->
+
+
+
+Some DDD concepts may not be explicitly  existing in code
+ 
+`(SnakeId, Snake)`
+
+
+
+It gets worse
 
 
 
@@ -305,20 +381,30 @@ Only have SnakeState  which does not (physically) contain Id
 
 
 
-Cluster of objects (entities, value objects)
+Cluster of objects (entities, value objects, + ) 
 
-Transactions never cross aggregates
+
 
 Aggregate remains consistent
 
 
 
+Keeps invariants
+
+
+
+Transactions should not cross aggregates
+
+
+
+
 # Aggregate root
 
- - One root entity from Aggregate
- - outside world communicates with it (sends commands)
- - outside world only keeps reference to this `object`  
-
+- Selected entity from Aggregate (root)
+- outside world communicates with it (sends commands)
+- outside world only keeps reference to this `root object`  
+- command handler
+- event handler
 
 
 
@@ -334,6 +420,38 @@ class Aggregate s where
 ```
 Typeclass
 source: https://gist.github.com/Fristi/7327904
+
+
+
+# Command handler
+
+```haskell
+executeCommand :: Snake -> SnakeCommand -> [SnakeEvent]
+```
+
+
+
+# Better command handler
+```haskell
+executeCommand :: Snake -> SnakeCommand
+      -> Either MyError [SnakeEvent]
+```
+
+
+
+# Event handler
+```haskell
+applyEvent::Snake-> SnakeEvent -> Snake
+```
+
+
+
+# Summary
+- define commands
+- define events
+- select root Entity
+- define commands handler
+- define events handler
 
 
 
@@ -357,7 +475,7 @@ executeCommand _ Begin {} = []
 executeCommand _ Eat{} = []
 ```
 
-Command handler
+Real Command handler
 
 
 
@@ -376,17 +494,75 @@ applyEventX _ _ = error "todo"
 
 ```
 
-Event handler
+Real event handler
 
 
 
-Modelling with events, commands is not needed in DDD. 
-It was not even defined in original book. 
-I just found that concentrating on behaviour brings more value.
+Modelling with events, commands is not needed in DDD
+ 
+It was not even considered in an original DDD book
+ 
+**behaviour first**  seem to be quite efficient
+
 
 
 
 Event storming
+
+
+
+Alternative to command handler / Aggregate
+
+
+
+```haskell 
+data SnakeCommand
+   = SetDirection { wantedDirection :: SnakeDirection }
+   | MakeStep
+   | Begin { 
+             initName :: String
+           , initCell :: SnakeCell }
+   | Die
+```
+
+Commands
+
+
+
+```haskell 
+data SnakeCommand next
+   = SetDirection { wantedDirection :: SnakeDirection }
+   | MakeStep next
+   | Begin { 
+             initName :: String
+           , initCell :: SnakeCell } next
+   | Die 
+```
+
+Have You seen that before?
+
+
+
+Free monad DSL
+
+
+
+Seems to be more usable in sequencing
+
+
+
+In typical REST we have one http call `->` one command. 
+Sequencing is not that needed.
+
+
+
+# How to find aggregates?
+
+
+
+Whole system as an aggregate? 
+ 
+ (One Big Aggregate)
 
 
 
@@ -402,6 +578,11 @@ Magic...
 
 
 
+![Repo](img/repo.png)
+
+
+
+
 - loadEntity::Id->IO Entity
 - saveEntity::Id->Entity->IO ()  
 - etc...
@@ -411,8 +592,9 @@ Magic...
 
 *Fact*
 Lots of magic Java frameworks trace state of objects
-and automatically persist changes to database.
-This means that a sensible repository save method looks like:
+and automatically persist changes to database
+
+This means that a sensible repository `save` method may look  like:
 
 
 
@@ -421,6 +603,8 @@ This means that a sensible repository save method looks like:
     
    }
 ```
+
+Yep, this works. There are lot of such projects.<!-- .element class="fragment"-->
 
 
 
@@ -445,7 +629,23 @@ I find it unnatural
 
 
 
- I started to send commands to a *Repository*
+I started to send commands to a *Repository*
+
+
+
+```haskell
+
+applyCommand :: SnakesRepo-> SnakeId -> Snake.SnakeCommand
+   -> IO SnakesRepo
+
+```
+This is so unDDD<!-- .element class="fragment"-->
+
+
+
+Makes for more sense than repeating a code with save events
+
+In my aggregates I do not have those uncommited events (is this a domain?) 
 
 
 
@@ -495,11 +695,11 @@ void stack.pop();  // boom
 
 OO world consensus:
 
-commands may return exceptions, some status
+commands may return exceptions, some status, etc.
 
 
 
-Is `error` not a result?
+Is an `error` not a result?
 
 
 
@@ -538,7 +738,7 @@ Actually I do not see much sense in classical CQS
  - nice to have separated queries
  - Error/Exception **is** an result
  - It only makes API easier to use ... in some mediocre languages
- - if we are thinking about `async`?
+ -  `async`?
 
 
 
@@ -570,34 +770,101 @@ Read/Query model - Projections
 
 
 
+Some CQRS principles
+- Critical: Events application cannot use any external data (projection)
+- Softer: Commands should not use projection to produce Events 
+- You can always recreate Aggregates using events
+- You can always recreate multiple projections using events
+
+
+
+*Fact*
+
+In `less impure` languages it is easy to make a mistake
+
+```java
+LocalDate.now()
+someRandom.nextInt()
+
+```
+
+
+
+*Fact*
+
+In typical Event souring operations like `findMeIdsOfAllAggregates` are performed using projections
+
+
+
+
 ```haskell
 data PlaneState = PlaneState
    { allSnakes :: Repo.SnakesMap
    , allCells  :: CellsMap
    , changes :: Changes
    } deriving (Show, Generic)
+  
+-- projection   
+applyEvent :: PlaneState -> Repo.SnakeQualifiedEvent -> (PlaneState, [Repo.SnakeQualifiedCmd])   
 ```
 
-My game field projection.
+My game field projection
+
 
 
 Used by browser
 
-Used to detect collisions (???)
+
+
+Projections are great:
+  - potential performance 
+  - make UI code simpler
 
 
 
+I use them to detect collisions
+
+If I find collision on a gameField I send `Die command` to snake
+
+I read few times this is wrong...
+
+But I do not see better solution (other than One Big Aggregate)
+
+
+
+
+In CQRS some operations are quite hard
+
+```
+nextId::Sequence->Int
+
+```
+
+
+
+# Code
+
+dsnake - haskell rest server, (yesod), Work in progress
+Please, do not use it as a valid DDD example resource
+
+... - this presentation (reveal.js)
+
+
+
+
+ # Resources on DDD/CQRS
  
- ## Books
- nothing about cqrs 
+ Bottega presentations
  
- ## Resources
- - nabrdalik
- - vlingo
+ `"The"` books
+ 
+ `http://CQRS.nu` (FAQ) page
+ 
+ `https://github.com/ddd-by-examples/event-source-cqrs-sample` by Kuba Nabrdalik
+ 
+ `https://github.com/vlingo` vlingo platform  
 
-## 
 
 
 
-
-# Test 2
+# Q?

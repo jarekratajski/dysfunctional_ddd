@@ -4,5 +4,5 @@ snake picture
 
 demo?
 
-cqrs
-projection picture
+
+a link to application
