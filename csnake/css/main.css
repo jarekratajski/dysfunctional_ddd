@@ -50,9 +50,6 @@ section.game {
     margin: 0;
 }
 
-
-
-
 .egg {
     background: yellow;
     border-radius: 100%;
@@ -88,6 +85,7 @@ body > section.game[data-state="start"] > .start {
     border-radius: 8px;
     box-shadow: 0px 0px 8px 8px green;
     text-align: center;
+    margin-bottom: 2em;
 }
 
 
