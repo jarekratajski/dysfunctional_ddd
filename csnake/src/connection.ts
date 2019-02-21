@@ -1,5 +1,5 @@
 import {Game} from './game';
-import {Plane} from './snake';
+import {Plane, Changes} from './snake';
 
 interface Registered {
   uid: string
@@ -17,11 +17,11 @@ export class Connection {
   }
 
   register(nickName: string): Promise<string> {
-    return fetch("/api/register")
+    return fetch("/api/register",{method: 'POST'})
       .then(result => result.json() as Promise<Registered>)
       .then((data: Registered) => {
         this.uid = data.uid;
-        console.log(data)
+
         return data.uid;
       });
   }
@@ -33,7 +33,8 @@ export class Connection {
 
 
   debugProjectEvent() : Promise<any>{
-    return fetch("/api/projectSingle", {method: 'POST'});
+    //return fetch("/api/projectSingle", {method: 'POST'}).then ( data => data.json());
+    return fetch("/api/projectAll", {method: 'POST'}).then ( data => data.json());
 
   }
 
@@ -51,9 +52,9 @@ export class Connection {
         return data;
       });
   }
-  getHistory(nr :Number): Promise<Plane> {
-    return fetch("/api/history/${nr}", {method: 'GET'})
-      .then(result => result.json() as Promise<Plane>)
+  getHistory(nr :Number): Promise<Changes> {
+    return fetch("/api/history/"+nr, {method: 'GET'})
+      .then(result => result.json() as Promise<Changes>)
       .then(data => {
         //console.log('place:' + JSON.stringify(data));
         return data;

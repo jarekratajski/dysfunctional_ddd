@@ -1,0 +1,9 @@
+flags: {}
+packages:
+- .
+extra-deps:
+- Cabal-2.2.0.0
+- containers-0.5.11.0
+- dequeue-0.1.12
+- periodic-0.1.0.0
+resolver: lts-13.7

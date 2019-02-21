@@ -4,7 +4,8 @@ export interface SnakeCell {
 }
 
 export interface Plane {
-  allCells:Array<CellPair>
+  allCells:Array<CellPair>,
+  changes: Changes
 }
 
 export interface PlaneCell {

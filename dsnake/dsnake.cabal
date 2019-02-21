@@ -1,0 +1,63 @@
+name:                dsnake
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/githubuser/dsnake#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Author name here
+maintainer:          example@example.com
+copyright:           2019 Author name here
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+
+library
+  hs-source-dirs:      src
+  -- main-is:             Main.hs
+  default-language:    Haskell2010
+  GHC-Options:          -Wall -Werror
+  exposed-modules:  SnakeModel,
+                                 SnakeExtras,
+                                 SnakeAggregate,
+                                 SnakeRepo,
+                                 Game.SnakePlane,
+                                 Game.State
+  build-depends:       base >= 4.9 && < 5,
+                                 aeson == 1.4.2.0,
+                                 uuid,
+                                 text,
+                                 dequeue,
+                                 containers
+
+executable dsnake
+  hs-source-dirs:       executable
+  main-is:                    Main.hs
+  default-language:    Haskell2010
+  -- GHC-Options:          -Wall -Werror -Wno-error=missing-signatures -Wno-error=type-defaults
+  GHC-Options:          -Wall
+  build-depends:       base >= 4.9 && < 5,
+                                 dsnake,
+                                 bytestring,
+                                 aeson,
+                                 yesod,
+                                 hedis,
+                                 text,
+                                 uuid,
+                                 periodic,
+                                 containers
+
+Test-Suite spec
+  Type:                 exitcode-stdio-1.0
+  Default-Language:     Haskell2010
+  Hs-Source-Dirs:       test
+  GHC-Options:       -fno-warn-missing-home-modules
+  Main-Is:              Spec.hs
+  Build-Depends:       base,
+                                 aeson,
+                                 dsnake,
+                                 bytestring,
+                                 hspec,
+                                 QuickCheck

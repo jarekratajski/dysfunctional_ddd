@@ -1,6 +1,6 @@
 import {Connection} from './connection';
 import {drawEtwas, maxHeight, maxWidth} from './draw';
-import {CellPair, Plane, PlaneCell, SnakeCell} from './snake';
+import {CellPair, Plane, PlaneCell, SnakeCell ,Changes, CellChange} from './snake';
 
 let alternateKeys: any = {
   'w': 'ArrowUp',
@@ -44,7 +44,7 @@ export class Game {
 
   singeRefresh() {
     if (this.gameState == 'play') {
-      this.processPlane();
+        this.processHistory();
     }
   }
 
@@ -52,6 +52,36 @@ export class Game {
     return JSON.stringify(value) === JSON.stringify(cellValue);
   }
 
+  redrawUsingHistory(changes: Changes) {
+    let lastHistoryNr = changes.lastNr;
+    let history = changes.history;
+    let keys = Object.keys(history) as Array<string>;
+    keys.forEach ( aKey => {
+        let cellChange = history[aKey] as CellChange;
+        cellChange.destroyed.forEach (aCell => {
+            let cellCoord = aCell.snakeCell;
+            let coord = this.coordToString(cellCoord);
+            let existingCell = this.visibleMapping[coord] as DrawnCell;
+            if (existingCell) {
+              existingCell.elem.remove();
+              delete this.visibleMapping[coord];
+            }
+        });
+
+      cellChange.created.forEach (aCell => {
+        let cellCoord = aCell.snakeCell;
+        let coord = this.coordToString(cellCoord);
+        let existingCell = this.visibleMapping[coord] as DrawnCell;
+        if (existingCell) {
+          existingCell.elem.remove();
+          delete this.visibleMapping[coord];
+        }
+        this.visibleMapping[coord] = this.drawCell(cellCoord, aCell);
+      });
+    });
+
+    this.lastHistory = lastHistoryNr;
+  }
 
   redrawCells(cells: Array<CellPair>) {
     //let cells = plane.allCells;
@@ -90,8 +120,6 @@ export class Game {
         toRemove.elem.remove();
       }
     });
-
-
   }
 
 
@@ -136,13 +164,16 @@ export class Game {
   processPlane():Promise<any> {
     return this.connection.getPlane().then(aPlane => {
       this.redrawCells(aPlane.allCells);
+      this.lastHistory = aPlane.changes.lastNr;
       return aPlane;
     });
   }
+
   processHistory():Promise<any> {
-    return this.connection.getPlane().then(aPlane => {
+    return this.connection.getHistory(this.lastHistory+1).then(aHistory => {
     //  this.redrawCells(aPlane);
-      return aPlane;
+      this.redrawUsingHistory(aHistory)
+      return aHistory;
     });
   }
 
@@ -197,6 +228,12 @@ export class Game {
       e.preventDefault();
     }
 
+    if (e.code == 'KeyH') {
+      this.processHistory();
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
     //
 
     return false;
@@ -211,9 +248,13 @@ export class Game {
   private procesEvents() {
     this.connection.debugProjectEvent().then(data => {
         if (data) {
-          this.procesEvents();
+          //console.log("continue...:"+data);
+          if ( data !== 'null') {
+            this.procesEvents();
+            //console.log("event endedn null!");
+          }
         } else {
-          console.log("event data was:" + data);
+          //console.log("event data was:" + data);
         }
       }
     );
@@ -223,14 +264,14 @@ export class Game {
     window.setInterval(() => {
       this.connection.debugMakeStep();
       this.procesEvents();
-    }, 500);
+    }, 1000);
   }
 
   private startRefreshing() {
     this.processPlane().then ( res => {
       window.setInterval(() => {
         this.singeRefresh();
-      }, 50);
+      }, 200);
     });
 
   }
@@ -247,7 +288,7 @@ export class Game {
 
     let anx = ax * cellX + bx;
     let any = ay * cellY + by;
-    this.pgElement.setAttribute('style', `left: ${anx}%;top: ${any}%;`);
+    this.pgElement.setAttribute('style', `transform: translateX(${anx}%) translateY(${any}%);`);
   }
 }
 

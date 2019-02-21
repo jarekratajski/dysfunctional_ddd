@@ -1,0 +1,118 @@
+[
+  {
+    "event": {
+      "tag": "Born",
+      "bornName": "aa",
+      "bornCell": {
+        "cellY": 18,
+        "cellX": 14
+      }
+    },
+    "snakeId": "4d09ac06-0375-4cb0-ad08-c70d14968677"
+  },
+  {
+    "event": {
+      "tag": "DirectionChanged",
+      "newDirection": "SnakeRight"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "DirectionChanged",
+      "newDirection": "SnakeRight"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "DirectionChanged",
+      "newDirection": "SnakeRight"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "b1fe55db-9235-400d-b45e-3a2353a238af"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "b1fe55db-9235-400d-b45e-3a2353a238af"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "b1fe55db-9235-400d-b45e-3a2353a238af"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "b1fe55db-9235-400d-b45e-3a2353a238af"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "b1fe55db-9235-400d-b45e-3a2353a238af"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "b1fe55db-9235-400d-b45e-3a2353a238af"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
+  },
+  {
+    "event": {
+      "tag": "StepMade"
+    },
+    "snakeId": "b1fe55db-9235-400d-b45e-3a2353a238af"
+  }
+]
