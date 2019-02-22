@@ -15,6 +15,12 @@ should look like (especially in Haskell). Sorry, I am still learning.
 I am getting there - need some time.
 If you can help - any issues, PR are welcome.
 
+# Running
+stack setup
+stack run 
+
+
+
 
 # Rest
 
@@ -23,3 +29,5 @@ curl localhost:3000/snakes
 
 register one
 curl localhost:3000/register
+
+
