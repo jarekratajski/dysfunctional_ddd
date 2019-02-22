@@ -39,9 +39,9 @@ export class Connection {
   }
 
   debugMakeStep() {
-    fetch("/api/step", {method: 'POST'})
-      .then(result => result.json())
-      .then(data => console.log('projectedEvents:' + JSON.stringify(data)));
+    return fetch("/api/step", {method: 'POST'})
+      .then(result => result.json());
+
   }
 
   getPlane(): Promise<Plane> {

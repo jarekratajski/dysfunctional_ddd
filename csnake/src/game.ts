@@ -262,16 +262,16 @@ export class Game {
 
   private auto() {
     window.setInterval(() => {
-      this.connection.debugMakeStep();
-      this.procesEvents();
-    }, 1000);
+      this.connection.debugMakeStep()
+        .then( _ => this.procesEvents() )
+    }, 500);
   }
 
   private startRefreshing() {
     this.processPlane().then ( res => {
       window.setInterval(() => {
         this.singeRefresh();
-      }, 200);
+      }, 100);
     });
 
   }

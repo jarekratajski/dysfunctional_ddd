@@ -13,6 +13,7 @@ module.exports = {
     path: __dirname
   },
     devServer: {
+        host: "0.0.0.0",
         port: 8080,
         noInfo: true,
         proxy: {

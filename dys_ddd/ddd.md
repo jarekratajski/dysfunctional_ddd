@@ -844,10 +844,13 @@ nextId::Sequence->Int
 
 # Code
 
-dsnake - haskell rest server, (yesod), Work in progress
-Please, do not use it as a valid DDD example resource
+[https://github.com/jarekratajski/dysfunctional_ddd](https://github.com/jarekratajski/dysfunctional_ddd)
 
-... - this presentation (reveal.js)
+dsnake - haskell rest server, (yesod)
+
+Work in progress
+
+Please, do not use it as a sensible DDD example resource (yet)
 
 
 
