@@ -4,6 +4,8 @@
 
 # Jarek
 
+works at Engenius GmbH
+
 Wizard, Anarchitect, Coder
 
 &gt; 25 years of coding<!-- .element class="fragment"-->
@@ -15,15 +17,16 @@ Wizard, Anarchitect, Coder
 
 
 # disclaimer
-   - I tried not to attack anyone personally, actually I do like my colleagues doing DDD, and I have learned a lot from some  of them<!-- .element class="fragment"-->
+   - I tried not to attack anyone, actually I do have learned a lot from my colleagues doing DDD<!-- .element class="fragment"-->
    - not an expert, (some experience wih CQRS/ES not DDD)<!-- .element class="fragment"-->
 
 
 
 # Why DDD?
 - People talk about it
-- Object oriented world
-- Like mixing concepts 
+- a piece Object oriented world
+- that is mostly ignored in FP
+- I like mixing concepts 
 
 
 
@@ -40,17 +43,17 @@ DDD story resembles me
 
 ![UML](img/umlcd.png)<!-- .element height="400px"-->
 
-cool<!-- .element class="fragment"-->
+some cool diagrams<!-- .element class="fragment"-->
 
 
 
 ![UML](img/umluc.png)<!-- .element height="400px"-->
 
-What??<!-- .element class="fragment"-->
+some WTF diagrams...<!-- .element class="fragment"-->
 
 
 
-# Agile cool
+# Agile good parts
  - Tests, TDD
  - CI,
  - Code over comments
@@ -62,8 +65,7 @@ What??<!-- .element class="fragment"-->
 
 
 
-
-# Agile reality
+# Agile bad parts
  - boring meetings
  - agile coaches, 
  - certificates
@@ -85,7 +87,9 @@ I work for money!
 
 
 
-But who likes marketing b...it?!
+However,
+
+who likes marketing b...it?! <!--.element class="fragment"-->
 
 
 
@@ -109,7 +113,7 @@ Make logic of the system visible in code
 
 
 # DDD good parts
-- community
+- community - people trying to be better
 - constant improvement
 - lots of patterns / ideas
 - interesting stories
@@ -120,73 +124,78 @@ Make logic of the system visible in code
 
 
 
-DDD bad(?) parts
+## DDD bad(?) parts
 - marketing
-- example projects
-- over-engineering 
 - partly toxic community
-- hard to see the point
+- hard to grasp the point
+- crazy example projects
+- over-engineering 
 
 
 
 If a tool, methodology, framework makes simple case **complex**
 
-it will probably not make a real life, complex project **simple**  
+it will probably not make a real life, complex project **simpler**
 
 
 
-![DDD](img/ddd.jpg)<!-- .element height="400px"-->
+![DDD](img/ddd.jpg)<!-- .element height="450px"-->
+
+ok
 
 
 
-![DDD nonsense](img/ddd_nonsense.png)<!-- .element height="400px"-->
+![DDD nonsense](img/ddd_nonsense.png)<!-- .element height="450px"-->
+
+wat?
 
 
 
-# BUT
+## BUT
 
 
 
 
-![Ferrari](img/ferrari.jpg)
+![Ferrari](img/ferrari.jpg)<!-- .element height="450px"-->
+
+I should think about money too
 
 
 
-# DDD
+## DDD is mostly
+## not about 
+## technology
 
 
 
-# Hard way
-
-
-
-Skipping some essential parts. 
-
-Like `bounded context` etc.
-
-
-
-DDD is mostly not about `technology`
-
-
-
-# Finding common Language
+## Finding common Language
 
 Ubiquitous Language
 
 
 
+## Bounded context
 
-Some concepts are useful, but have nothing to do with FP 
-
-
-
-
-I just love to `code` more
+One `Product` does not fit everybody
 
 
 
-And you wil not pay me areal money (for a fancy car) :-(
+### Divide domain by context
+ - customer
+ - sales
+ - ads
+ - booking 
+ - supply
+
+
+
+Avoid communication traps
+
+`Principle of least astonishment` on design
+
+
+
+# Example DDD project
 
 
 
@@ -194,11 +203,70 @@ And you wil not pay me areal money (for a fancy car) :-(
 
 
 
+
 ![Snake](img/snake.png)
 
 
 
-# Commands
+# Code
+
+[https://github.com/jarekratajski/dysfunctional_ddd](https://github.com/jarekratajski/dysfunctional_ddd)
+
+dsnake - haskell rest server, (yesod)
+
+Work in progress (always)
+
+Please, do not use it as a sensible DDD example resource (yet)
+
+(help needed :-) )
+
+
+
+# Event storming
+
+
+
+### Domain events
+
+
+
+<!--.slide: data-background="img/eventstorm/events.png"-->
+
+
+
+
+<!--.slide: data-background="img/eventstorm/commands.png"-->
+
+
+
+
+<!--.slide: data-background="img/eventstorm/actor1.png"-->
+
+
+
+
+<!--.slide: data-background="img/eventstorm/actor2.png"-->
+
+
+
+
+<!--.slide: data-background="img/eventstorm/snake.png"-->
+
+
+
+
+# Modelling phase 2
+
+- Snake
+- SnakeCell
+- ...
+
+
+
+# Command
+
+ - user or subsystem `wants` to do something
+ - commands may be associated with validation
 
 
 
@@ -207,21 +275,20 @@ data SnakeCommand
    = SetDirection { wantedDirection :: SnakeDirection }
    | MakeStep
    | Begin { 
-             initName :: String
-           , initCell :: SnakeCell }
+             initName :: String,
+             initCell :: SnakeCell }
 ```
 
 
 
+# Event
 
-# Commands
-
- - user or subsytem `wants` to do something
- - commands may be associated with validation
-
+ - it has happened
+ - no validation (it really happened)
+ - a single command can trigger  0..n events 
 
 
-# Events
+
 
 ```haskell
 data SnakeEvent
@@ -235,59 +302,19 @@ data SnakeEvent
 
 
 
-
-# Event
-
- - it has happened
- - no validation (it really happened)
- - a single command is associated in 0..n events 
+## We will do CQRS based solution
 
 
 
 *Fact*
 
-You will not find anything about this  in Eric Evans book  (blue))
+You will not find anything about CQRS  in Eric Evans book  (blue))
  
 Even though nowadays  DDD community seems to be all around those concepts 
 
 
 
-# Event sourcing
-
-What if just stored only events?
-
-
-
-```json
-[
-  {
-    "event": {
-      "tag": "Born",
-      "bornName": "aa",
-      "bornCell": {
-        "cellY": 18,
-        "cellX": 14
-      }
-    },
-    "snakeId": "4d09ac06-0375-4cb0-ad08-c70d14968677"
-  },
-  {
-    "event": {
-      "tag": "DirectionChanged",
-      "newDirection": "SnakeRight"
-    },
-    "snakeId": "d305e9da-10a2-4fa6-af7e-16443ad5856b"
-  },
- 
-
-```
-
-
-
-# Command sourcing?
-
-Also possible... but in fact harder - validation is a problem
-
+# DDD building blocks
 
 
 
@@ -309,8 +336,7 @@ data SnakeDirection
    = SnakeUp
    | SnakeRight
    | SnakeDown
-   | SnakeLeft
-   
+   | SnakeLeft   
 ```
 
 
@@ -319,14 +345,13 @@ data SnakeDirection
 
 - has identity
 - in OOP may be mutable
-- ID defines equality 
+- ID/key defines equality 
 - entity may contain `value objects`
 - entity may contain `entities`
 
 
 
 ```haskell
-
 data SnakeCell = SnakeCell
    { cellX :: Int
    , cellY :: Int
@@ -353,7 +378,9 @@ Easy?
 
 
 
-- `SnakeCell(x,y)` is value object or entity?
+`SnakeCell(x,y)`
+ 
+is it value object or entity? <!--.element class="fragment"-->
 
 
 
@@ -361,13 +388,17 @@ Easy?
 
 I have never introduced `type SnakeEntity = (SnakeId, Snake)` 
 
-Only have SnakeState which does not (physically) contain Id
+SnakeState  does not (physically) contain Id
 
 an Entity without id??<!-- .element class="fragment"-->
 
+but we reference Snake by SnakeId <!-- <!--.element class="fragment"-->
 
 
-Some DDD concepts may not be explicitly  existing in code
+
+## Lesson
+
+Some DDD concepts may not explicitly exist in code
  
 `(SnakeId, Snake)`
 
@@ -377,7 +408,7 @@ It gets worse
 
 
 
-# Aggregate
+## Aggregate
 
 
 
@@ -387,9 +418,7 @@ Cluster of objects (entities, value objects, + )
 
 Aggregate remains consistent
 
-
-
-Keeps invariants
+Keeps invariants <!--.element class="fragment"-->
 
 
 
@@ -398,11 +427,11 @@ Transactions should not cross aggregates
 
 
 
-# Aggregate root
+### Aggregate root
 
 - Selected entity from Aggregate (root)
-- outside world communicates with it (sends commands)
 - outside world only keeps reference to this `root object`  
+- outside world communicates with it (sends commands)
 - command handler
 - event handler
 
@@ -423,7 +452,7 @@ source: https://gist.github.com/Fristi/7327904
 
 
 
-# Command handler
+## Command handler
 
 ```haskell
 executeCommand :: Snake -> SnakeCommand -> [SnakeEvent]
@@ -431,7 +460,7 @@ executeCommand :: Snake -> SnakeCommand -> [SnakeEvent]
 
 
 
-# Better command handler
+## Better command handler
 ```haskell
 executeCommand :: Snake -> SnakeCommand
       -> Either MyError [SnakeEvent]
@@ -439,14 +468,14 @@ executeCommand :: Snake -> SnakeCommand
 
 
 
-# Event handler
+## Event handler
 ```haskell
 applyEvent::Snake-> SnakeEvent -> Snake
 ```
 
 
 
-# Summary
+###  DDD CQRS Style
 - define commands
 - define events
 - select root Entity
@@ -480,17 +509,17 @@ Real Command handler
 
 
 ```haskell
-applyEventX snake@(SnakeData {state = alive@Alive {}}) DirectionChanged { newDirection = nd }  =
+applyEvent snake@(SnakeData {state = alive@Alive {}}) DirectionChanged { newDirection = nd }  =
       makeRes $ snake { state = alive{direction = nd} }
-applyEventX snake@(SnakeData {state = Alive {}}) Killed = makeRes snake { state = Dead}
-applyEventX SnakeData {state = Init} Born {bornName = nm, bornCell = cell} = SnakeEventResult {
+applyEvent snake@(SnakeData {state = Alive {}}) Killed = makeRes snake { state = Dead}
+applyEvent SnakeData {state = Init} Born {bornName = nm, bornCell = cell} = SnakeEventResult {
             newSnake = SnakeData { name = nm , state = initialState },
                newCells = [cell], removedCells = []
       }
    where initialState = Alive { direction = SnakeUp, cells = [cell], maxLength = 5 }
-applyEventX snake@(SnakeData {state = alive@Alive {maxLength = n}})  HasEaten{} =
+applyEvent snake@(SnakeData {state = alive@Alive {maxLength = n}})  HasEaten{} =
          makeRes snake { state = alive { maxLength = n+3} }
-applyEventX _ _ = error "todo"
+applyEvent _ _ = error "todo"
 
 ```
 
@@ -498,65 +527,9 @@ Real event handler
 
 
 
-Modelling with events, commands is not needed in DDD
- 
-It was not even considered in an original DDD book
- 
-**behaviour first**  seem to be quite efficient
+**behaviour first** / **verbs first** seem to be quite efficient
 
-
-
-
-Event storming
-
-
-
-Alternative to command handler / Aggregate
-
-
-
-```haskell 
-data SnakeCommand
-   = SetDirection { wantedDirection :: SnakeDirection }
-   | MakeStep
-   | Begin { 
-             initName :: String
-           , initCell :: SnakeCell }
-   | Die
-```
-
-Commands
-
-
-
-```haskell 
-data SnakeCommand next
-   = SetDirection { wantedDirection :: SnakeDirection }
-   | MakeStep next
-   | Begin { 
-             initName :: String
-           , initCell :: SnakeCell } next
-   | Die 
-```
-
-Have You seen that before?
-
-
-
-Free monad DSL
-
-
-
-Seems to be more usable in sequencing
-
-
-
-In typical REST we have one http call `->` one command. 
-Sequencing is not that needed.
-
-
-
-# How to find aggregates?
+even in OOP/OOM <!--.element class="fragment"-->
 
 
 
@@ -590,7 +563,8 @@ Magic...
 
 
 
-*Fact*
+## Fact
+
 Lots of magic Java frameworks trace state of objects
 and automatically persist changes to database
 
@@ -598,13 +572,13 @@ This means that a sensible repository `save` method may look  like:
 
 
 
+Valid implementation of save from one of java projects
+
 ```java
    void save(MyObject t) {
     
    }
 ```
-
-Yep, this works. There are lot of such projects.<!-- .element class="fragment"-->
 
 
 
@@ -619,9 +593,9 @@ data SnakeAggregate = SnakeAggregate {
 }       
 ```
 
+Common pattern in DDD style event sourcing 
 
-
-Common pattern in DDD style event sourcing is to save those `uncommited events`
+is to save those `uncommited events`
 
 
 
@@ -639,13 +613,12 @@ applyCommand :: SnakesRepo-> SnakeId -> Snake.SnakeCommand
    -> IO SnakesRepo
 
 ```
-This is so unDDD<!-- .element class="fragment"-->
+That is so unDDD<!-- .element class="fragment"-->
 
+Maybe we  need better name for this pattern<!--.element class="fragment"-->
 
+Maybe it exists already <!--.element class="fragment"-->
 
-Makes for more sense than repeating a code with save events
-
-In my aggregates I do not have those uncommited events (is this a domain?) 
 
 
 
@@ -663,7 +636,7 @@ If You change state (Command) do not expect result
 
 
 
-A Stack
+A  non CQS Stack
 
 ```java
 void stack.push( T  t);
@@ -686,7 +659,7 @@ Simple?
 
 
 
-what if called on empty stack?
+what if called on an empty stack?
 ```
 void stack.pop();  // boom
 ```
@@ -709,8 +682,8 @@ In FP world
 
 ```haskell
 push::Stack a->a->Stack a
-top::Stack a->a
-pop::Stack a->Stack a 
+top::Stack a->Maybe a
+pop::Stack a->Stack a
 ```
 
 
@@ -726,14 +699,14 @@ IO ()
 
 
 ```haskell
-whatAPop::Stack a->(Stack a, a)
+uberPop::Stack a->(Stack a, a)
 ```
 
-Is it really bad?
+Is it really that bad?
 
 
 
-Actually I do not see much sense in classical CQS
+Actually I do not see much sense in classical CQS (in FP)
 
  - nice to have separated queries
  - Error/Exception **is** an result
@@ -771,95 +744,102 @@ Read/Query model - Projections
 
 
 Some CQRS principles
-- Critical: Events application cannot use any external data (projection)
-- Softer: Commands should not use projection to produce Events 
-- You can always recreate Aggregates using events
-- You can always recreate multiple projections using events
+- Critica rulel: Events handler cannot use any external data (projection)
+- Rule: You can always recreate Aggregates using Events
+- Rule: You can always recreate multiple projections using Events
 
 
 
 *Fact*
 
-In `less impure` languages it is easy to make a mistake
+In `less pure` languages it is easy to make a mistake
+
+```scala
+def eventHandler(state : State, event : Event) : State { 
+  LocalDate.now()
+  val x =  someRandom.nextInt()
+  ...
+}
+```
+
+
+
+## DDD Lessons
+
+
+
+Try to minimize impact of technical details in your code  
 
 ```java
-LocalDate.now()
-someRandom.nextInt()
+Mono<User> user = repo.findUser(1001);
+Mono<Group> group = user.flatMap (user -> user.getGroup())
+Mono<NotificationChannel> channel = 
+    group.map ( group -> group.getNotificationChannel())    
 
-```
+``` 
+<!--.element class="fragment"-->
 
-
-
-*Fact*
-
-In typical Event souring operations like `findMeIdsOfAllAggregates` are performed using projections
-
+Which is hard in Java <!--.element class="fragment"-->
 
 
 
-```haskell
-data PlaneState = PlaneState
-   { allSnakes :: Repo.SnakesMap
-   , allCells  :: CellsMap
-   , changes :: Changes
-   } deriving (Show, Generic)
+```scala
+for {
+  user <- repo.findUser(1001)
+  group <- user.getGroup()
   
--- projection   
-applyEvent :: PlaneState -> Repo.SnakeQualifiedEvent -> (PlaneState, [Repo.SnakeQualifiedCmd])   
-```
-
-My game field projection
-
-
-
-Used by browser
-
-
-
-Projections are great:
-  - potential performance 
-  - make UI code simpler
-
-
-
-I use them to detect collisions
-
-If I find collision on a gameField I send `Die command` to snake
-
-I read few times this is wrong...
-
-But I do not see better solution (other than One Big Aggregate)
-
-
-
-
-In CQRS some operations are quite hard
-
-```
-nextId::Sequence->Int
-
+} yield ( group.notificationChannel)
 ```
 
 
 
-# Code
-
-[https://github.com/jarekratajski/dysfunctional_ddd](https://github.com/jarekratajski/dysfunctional_ddd)
-
-dsnake - haskell rest server, (yesod)
-
-Work in progress
-
-Please, do not use it as a sensible DDD example resource (yet)
+Popular FP languages have great power to hide technical details
 
 
 
+## With great power....
 
- # Resources on DDD/CQRS
+comes Monoid, Profunctor and Apomorphism <!--.element class="fragment"-->
+
+
+
+Abstractions are great
+
+But they should not overshadow the business logic
+
+
+
+Yet,
+
+Code is for coders <!--.element class="fragment"-->
+
+Do not fight to make it readable  by  business! <!--.element class="fragment"-->
+
+This is not the goal <!--.element class="fragment"-->
+
+
+
+### The goal is to make the next developer communication with business easier
+
+
+
+This is hard    
+
+This is craft <!--.element class="fragment"-->
+
+This is an art <!--.element class="fragment"-->
+
+
+
+There is no golden hammer
+
+
+
+### Resources on DDD/CQRS
  
- Bottega presentations
- 
- `"The"` books
+Eric Evans  `Domain Driven Desing`
+
+Vaughn Vernon `Implementing Domain-Driven Design` 
  
  `http://CQRS.nu` (FAQ) page
  
@@ -869,5 +849,16 @@ Please, do not use it as a sensible DDD example resource (yet)
 
 
 
+### Conclusion
 
-# Q?
+DDD will not magically solve your problems <!--.element class="fragment"-->
+
+It is about  learning how to make business logic visible in code <!--.element class="fragment"-->
+
+Not all DDD pattern apply in FP  <!--.element class="fragment"-->
+
+But our languages are actually sometimes more expressive <!--.element class="fragment"-->
+
+And this is yet another chance to make FP business friendly <!--.element class="fragment"-->
+
+`@jarek000000`
